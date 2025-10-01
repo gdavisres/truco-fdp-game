@@ -48,8 +48,23 @@ const createApp = () => {
   app.use(helmet());
   configureSecurityHeaders(app); // Additional security headers
   app.use(compression()); // Enable gzip compression
+  // Configure CORS with explicit origin check so we can log and debug mismatches.
+  const allowedOrigins = Array.isArray(config.cors.origin) ? config.cors.origin : [config.cors.origin];
   app.use(cors({
-    origin: config.cors.origin,
+    origin: (origin, callback) => {
+      // No origin means server-to-server or curl; allow it
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Log blocked origin for debugging and do not allow
+      logger.warn('cors.origin_blocked', { origin, allowedOrigins });
+      return callback(null, false);
+    },
     credentials: true,
   }));
   app.use(express.json());
