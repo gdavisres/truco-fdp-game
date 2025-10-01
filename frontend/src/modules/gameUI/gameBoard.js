@@ -445,8 +445,8 @@ const renderMeta = (section, state, context) => {
     clearChildren(viraCardSlot);
 
     if (viraCard) {
-      const label = formatCardLabel(viraCard);
-      viraLabel.textContent = manilhaRank ? `Vira ${label} · Manilha: ${manilhaRank}` : `Vira ${label}`;
+      // Show only the manilha rank since the card is already visible
+      viraLabel.textContent = manilhaRank ? `Manilha: ${manilhaRank}` : 'Vira';
       const cardElement = createCardElement(viraCard, {
         interactive: false,
         reveal: true,
@@ -524,6 +524,22 @@ export const init = async (context) => {
   const handEl = section.querySelector('[data-testid="hand-cards"]');
   const visibleEl = section.querySelector('[data-testid="visible-cards"]');
   const historyEl = section.querySelector('[data-testid="trick-history"]');
+  const timerEl = section.querySelector('[data-testid="board-timer"]');
+
+  // Timer update interval
+  let timerInterval = null;
+  const startTimerInterval = () => {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+    timerInterval = setInterval(() => {
+      const state = store.getState();
+      if (timerEl && state.turnEndsAt) {
+        const seconds = clampSeconds(state.turnEndsAt);
+        timerEl.textContent = formatSeconds(seconds);
+      }
+    }, 100); // Update every 100ms for smooth countdown
+  };
 
   const render = (state) => {
     const shouldShow =
@@ -535,7 +551,19 @@ export const init = async (context) => {
 
     section.hidden = !shouldShow;
     if (section.hidden) {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
       return;
+    }
+
+    // Start timer interval if we have a deadline
+    if (state.turnEndsAt && !timerInterval) {
+      startTimerInterval();
+    } else if (!state.turnEndsAt && timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
     }
 
     console.log('[GameBoard] render called, state:', {
@@ -564,6 +592,9 @@ export const init = async (context) => {
 
   return {
     destroy: () => {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
       unsubscribe?.();
       section.remove();
     },

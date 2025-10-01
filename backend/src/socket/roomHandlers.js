@@ -45,7 +45,7 @@ const {
 const DEFAULT_GAME_TIME_LIMIT_MS = 60 * 60 * 1000;
 const GAME_TIMER_TICK_MS = 60 * 1000;
 const GAME_TIMER_WARNING_MS = 5 * 60 * 1000;
-const ROUND_TRANSITION_DELAY_MS = 200;
+const ROUND_TRANSITION_DELAY_MS = 10000; // 10 seconds to view final trick before next round
 
 const MAX_CHAT_MESSAGE_LENGTH = 200;
 const CHAT_HISTORY_LIMIT = 100;
