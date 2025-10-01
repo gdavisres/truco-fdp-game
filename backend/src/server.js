@@ -71,6 +71,14 @@ const createApp = () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(httpLogger);
 
+  // Prevent CDN/edge from caching API responses which can cause 304 responses
+  // to be returned without CORS headers by intermediate caches. Set no-store
+  // for API endpoints so browsers always receive fresh responses with CORS.
+  app.use('/api', (req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+  });
+
   app.get('/api/health', (req, res) => {
     const { getSecurityStats } = require('./modules/security');
     const memoryUsage = process.memoryUsage();
