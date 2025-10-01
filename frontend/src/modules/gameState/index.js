@@ -679,7 +679,9 @@ const handleCardsDealt = (store, payload) => {
 };
 
 const handleTrickStarted = (store, payload) => {
+  console.log('[GameState] trick_started event received:', payload);
   if (!payload) {
+    console.warn('[GameState] trick_started payload is null/undefined');
     return;
   }
 
@@ -697,15 +699,24 @@ const handleTrickStarted = (store, payload) => {
       completedAt: null,
     },
   }));
+  
+  console.log('[GameState] trick started - new trick initialized');
 };
 
 const handleCardPlayed = (store, payload) => {
+  console.log('[GameState] card_played event received:', payload);
   if (!payload || !payload.playerId || !payload.card) {
+    console.warn('[GameState] card_played payload missing required fields');
     return;
   }
 
   store.setState((prev) => {
     const nextCards = { ...prev.currentTrick.cardsPlayed, [payload.playerId]: cloneCard(payload.card) };
+    console.log('[GameState] card played - updating cardsPlayed:', {
+      playerId: payload.playerId,
+      card: payload.card,
+      totalCardsPlayed: Object.keys(nextCards).length,
+    });
     let nextHand = prev.hand;
     let pendingCard = prev.pending?.card ?? null;
 
@@ -757,7 +768,9 @@ const handleCardPlayed = (store, payload) => {
 };
 
 const handleTrickCompleted = (store, payload) => {
+  console.log('[GameState] trick_completed event received:', payload);
   if (!payload) {
+    console.warn('[GameState] trick_completed payload is null/undefined');
     return;
   }
 
@@ -767,6 +780,12 @@ const handleTrickCompleted = (store, payload) => {
           Object.entries(payload.cardsPlayed).map(([playerId, card]) => [playerId, cloneCard(card)]),
         )
       : { ...prev.currentTrick.cardsPlayed };
+
+    console.log('[GameState] trick completed - cardsPlayed:', {
+      fromPayload: payload.cardsPlayed,
+      processed: cardsPlayed,
+      winner: payload.winner,
+    });
 
     const winnerId = payload.winner ?? null;
     const winningCard = winnerId && cardsPlayed[winnerId] ? cloneCard(cardsPlayed[winnerId]) : null;
@@ -1143,6 +1162,13 @@ export const init = async (context) => {
   subscribeClient('host_settings_updated', (payload) => applyHostSettingsUpdate(store, payload));
 
   subscribeSocket('connection_status', (payload) => applyStatusChange(store, payload));
+  subscribeSocket('game_started', (payload) => {
+    console.log('[GameState] game_started event received:', payload);
+    if (payload && Array.isArray(payload.playerOrder)) {
+      store.setState({ playerOrder: [...payload.playerOrder] });
+      console.log('[GameState] playerOrder set:', payload.playerOrder);
+    }
+  });
   subscribeSocket('bidding_turn', (payload) => handleBiddingTurn(store, payload));
   subscribeSocket('bid_submitted', (payload) => handleBidSubmitted(store, payload));
   subscribeSocket('action_error', (payload) => handleActionError(store, payload));

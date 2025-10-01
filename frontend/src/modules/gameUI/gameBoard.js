@@ -115,6 +115,7 @@ const createTemplate = () => {
   section.hidden = true;
 
   section.innerHTML = `
+    <header class="game-board__header">
       <h2 class="game-board__title">Trick play</h2>
       <div class="game-board__meta">
         <span data-testid="board-round">Round —</span>
@@ -237,8 +238,16 @@ const createSlot = ({
 
 const renderTrick = (context, element, state) => {
   if (!element) {
+    console.warn('[GameBoard] renderTrick called with null element');
     return;
   }
+
+  console.log('[GameBoard] renderTrick called:', {
+    trickNumber: state.currentTrick?.number,
+    cardsPlayed: state.currentTrick?.cardsPlayed,
+    cardsPlayedKeys: state.currentTrick?.cardsPlayed ? Object.keys(state.currentTrick.cardsPlayed) : [],
+    playerOrder: state.playerOrder,
+  });
 
   const statusEl = element.parentElement?.querySelector('[data-testid="trick-status"]');
   if (statusEl) {
@@ -271,6 +280,12 @@ const renderTrick = (context, element, state) => {
   order.forEach((playerId) => {
     const info = describePlayer(context, playerId, state.playerId);
     const card = state.currentTrick.cardsPlayed?.[playerId] ?? null;
+    console.log('[GameBoard] Creating slot for player:', {
+      playerId,
+      playerName: info.name,
+      hasCard: !!card,
+      card: card,
+    });
     const isLeader = currentLeader === playerId;
     const isWinningCard = card && winningCard ? cardsEqual(card, winningCard) : false;
     const slot = createSlot({
@@ -283,6 +298,8 @@ const renderTrick = (context, element, state) => {
     });
     element.append(slot);
   });
+
+  console.log('[GameBoard] renderTrick complete, element children:', element.children.length);
 };
 
 const renderVisibleCards = (context, container, state) => {
@@ -520,6 +537,13 @@ export const init = async (context) => {
     if (section.hidden) {
       return;
     }
+
+    console.log('[GameBoard] render called, state:', {
+      phase: state.phase,
+      playerOrder: state.playerOrder,
+      currentTrick: state.currentTrick,
+      handSize: state.hand?.length,
+    });
 
     renderMeta(section, state, context);
     renderPlayers(context, playersEl, state);

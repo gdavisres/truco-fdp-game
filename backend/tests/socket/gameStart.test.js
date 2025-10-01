@@ -147,7 +147,10 @@ describe('start_game socket handler', () => {
 
     const hostDeal = hostSocket.emit.mock.calls.find(([event]) => event === 'cards_dealt');
     expect(hostDeal).toBeDefined();
-    expect(hostDeal[1].hand).toEqual([]);
+    // In blind rounds, hand contains hidden cards (cards with hidden: true)
+    expect(Array.isArray(hostDeal[1].hand)).toBe(true);
+    expect(hostDeal[1].hand.length).toBe(1); // Round 1 has 1 card
+    expect(hostDeal[1].hand[0].hidden).toBe(true); // Card should be marked as hidden
     expect(Array.isArray(hostDeal[1].visibleCards)).toBe(true);
     expect(hostDeal[1].visibleCards.length).toBeGreaterThanOrEqual(2);
     expect(
@@ -158,14 +161,17 @@ describe('start_game socket handler', () => {
 
     const secondDeal = socketTwo.emit.mock.calls.find(([event]) => event === 'cards_dealt');
     expect(secondDeal).toBeDefined();
-  expect(secondDeal[1].hand).toEqual([]);
-  expect(Array.isArray(secondDeal[1].visibleCards)).toBe(true);
-  expect(secondDeal[1].visibleCards.length).toBeGreaterThanOrEqual(2);
-  expect(
-    secondDeal[1].visibleCards.every(
-      (card) => typeof card.ownerDisplayName === 'string' && card.ownerDisplayName.length > 0,
-    ),
-  ).toBe(true);
+    // In blind rounds, hand contains hidden cards (cards with hidden: true)
+    expect(Array.isArray(secondDeal[1].hand)).toBe(true);
+    expect(secondDeal[1].hand.length).toBe(1); // Round 1 has 1 card
+    expect(secondDeal[1].hand[0].hidden).toBe(true); // Card should be marked as hidden
+    expect(Array.isArray(secondDeal[1].visibleCards)).toBe(true);
+    expect(secondDeal[1].visibleCards.length).toBeGreaterThanOrEqual(2);
+    expect(
+      secondDeal[1].visibleCards.every(
+        (card) => typeof card.ownerDisplayName === 'string' && card.ownerDisplayName.length > 0,
+      ),
+    ).toBe(true);
 
     const room = stateManager.getRoom(roomId);
     expect(room.status).toBe('playing');

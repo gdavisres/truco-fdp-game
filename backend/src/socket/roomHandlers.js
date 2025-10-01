@@ -2406,7 +2406,8 @@ const createRoomSocketHandlers = ({
       }
 
       const view = round.getHandViewForPlayer(player.playerId);
-      const selfCards = round.isBlindRound ? [] : view.self;
+      // In blind rounds, send the player's own cards as hidden cards in hand
+      const selfCards = view.self;
       const payload = {
         hand: selfCards.map((card) => serializeCard(card)),
       };
