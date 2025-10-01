@@ -1,0 +1,222 @@
+.bidding {
+  margin-top: clamp(1rem, 4vw, 1.5rem);
+  padding: clamp(1rem, 4vw, 1.5rem);
+  border-radius: 1.2rem;
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.35);
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 3.5vw, 1.25rem);
+}
+
+.bidding__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.bidding__title {
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.bidding__timer {
+  min-width: 110px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.85);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.bidding__timerValue {
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-weight: 700;
+  color: #e0f2fe;
+}
+
+.bidding__timer[data-state='warning'] .bidding__timerValue {
+  color: #facc15;
+}
+
+.bidding__timer[data-state='critical'] .bidding__timerValue {
+  color: #f87171;
+}
+
+.bidding__timer[data-state='paused'] .bidding__timerValue {
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.bidding__status {
+  margin: 0;
+  font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.bidding__content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(0.85rem, 3vw, 1.5rem);
+}
+
+.bidding__players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.bidding__player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.9rem;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(94, 109, 134, 0.3);
+  backdrop-filter: blur(6px);
+  transition: transform 160ms ease;
+}
+
+.bidding__player[data-current='true'] {
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.35);
+  transform: translateY(-2px);
+}
+
+.bidding__player[data-self='true'] .bidding__playerName {
+  font-weight: 700;
+}
+
+.bidding__playerName {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.bidding__playerBadge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.25);
+  color: #bfdbfe;
+}
+
+.bidding__playerBid {
+  font-size: clamp(0.95rem, 3.2vw, 1.1rem);
+  font-weight: 600;
+  min-width: 3rem;
+  text-align: right;
+  color: rgba(226, 232, 240, 0.95);
+}
+
+.bidding__playerBid[data-state='pending'] {
+  color: #fcd34d;
+}
+
+.bidding__playerBid[data-state='waiting'] {
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.bidding__playerBid[data-state='auto'] {
+  color: #34d399;
+}
+
+.bidding__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bidding__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: 0.65rem;
+}
+
+.bidding__option {
+  border-radius: 0.85rem;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(37, 99, 235, 0.35) 100%);
+  color: #0ea5e9;
+  font-weight: 600;
+  padding: 0.65rem 0.75rem;
+  font-size: clamp(1.05rem, 3.8vw, 1.25rem);
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.bidding__option:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0.85rem 1.6rem rgba(37, 99, 235, 0.35);
+}
+
+.bidding__option:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  background: rgba(15, 23, 42, 0.65);
+  color: rgba(148, 163, 184, 0.85);
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: none;
+}
+
+.bidding__option--active {
+  border-color: rgba(56, 189, 248, 0.9);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.6) 0%, rgba(37, 99, 235, 0.8) 100%);
+  color: #0f172a;
+  box-shadow: 0 1rem 2rem rgba(14, 165, 233, 0.45);
+}
+
+.bidding__option--restricted {
+  border-style: dashed;
+  background: rgba(239, 68, 68, 0.1);
+  color: rgba(248, 113, 113, 0.95);
+  opacity: 1;
+}
+
+.bidding__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.bidding__restriction {
+  font-size: 0.85rem;
+  color: #fca5a5;
+  border-left: 3px solid rgba(248, 113, 113, 0.65);
+  padding-left: 0.6rem;
+}
+
+.bidding__error {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fca5a5;
+}
+
+@media (max-width: 520px) {
+  .bidding__content {
+    grid-template-columns: 1fr;
+  }
+
+  .bidding__timer {
+    min-width: 90px;
+  }
+}

@@ -1,0 +1,77 @@
+# Dependencies
+node_modules/
+**/node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables (NEVER COMMIT THESE!)
+.env
+.env.local
+.env.production
+.env.*.local
+**/.env
+**/.env.local
+**/.env.production
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+**/logs/
+**/*.log
+pm2-*.log
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# PM2
+.pm2/
+**/pm2-*.log
+ecosystem.config.json.bak
+
+# State files (game data - backup separately!)
+backend/var/
+backend/backend/var/
+**/state.json
+**/state.json.backup
+
+# Test coverage
+coverage/
+.nyc_output/
+**/coverage/
+**/.nyc_output/
+test-results/
+**/test-results/
+playwright-report/
+**/playwright-report/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.eslintcache
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+*~

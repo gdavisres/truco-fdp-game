@@ -1,0 +1,238 @@
+/* Error Notification Styles */
+
+.error-notifications {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  max-width: 420px;
+  width: calc(100% - 40px);
+  pointer-events: none;
+}
+
+.error-notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  animation: slideIn 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.error-notification--hiding {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* Severity Colors */
+.error-notification--info {
+  border-left: 4px solid #2196F3;
+}
+
+.error-notification--warning {
+  border-left: 4px solid #FF9800;
+}
+
+.error-notification--error {
+  border-left: 4px solid #F44336;
+}
+
+.error-notification--critical {
+  border-left: 4px solid #D32F2F;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+/* Icon */
+.error-notification__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.error-notification--info .error-notification__icon {
+  color: #2196F3;
+}
+
+.error-notification--warning .error-notification__icon {
+  color: #FF9800;
+}
+
+.error-notification--error .error-notification__icon {
+  color: #F44336;
+}
+
+.error-notification--critical .error-notification__icon {
+  color: #D32F2F;
+}
+
+/* Content */
+.error-notification__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-notification__message {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  word-wrap: break-word;
+}
+
+/* Actions */
+.error-notification__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.error-notification__action {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #f5f5f5;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.error-notification__action:hover {
+  background: #e0e0e0;
+}
+
+.error-notification__action:active {
+  transform: scale(0.95);
+}
+
+.error-notification--error .error-notification__action,
+.error-notification--critical .error-notification__action {
+  background: #F44336;
+  color: white;
+}
+
+.error-notification--error .error-notification__action:hover,
+.error-notification--critical .error-notification__action:hover {
+  background: #D32F2F;
+}
+
+.error-notification--warning .error-notification__action {
+  background: #FF9800;
+  color: white;
+}
+
+.error-notification--warning .error-notification__action:hover {
+  background: #F57C00;
+}
+
+/* Close Button */
+.error-notification__close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.error-notification__close:hover {
+  color: #333;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .error-notifications {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    width: auto;
+  }
+
+  .error-notification {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .error-notification__message {
+    font-size: 13px;
+  }
+
+  .error-notification__actions {
+    flex-direction: column;
+  }
+
+  .error-notification__action {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .error-notification {
+    animation: none;
+  }
+
+  .error-notification--hiding {
+    transition: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .error-notification {
+    background: #2c2c2c;
+    color: #e0e0e0;
+  }
+
+  .error-notification__message {
+    color: #e0e0e0;
+  }
+
+  .error-notification__action {
+    background: #424242;
+    color: #e0e0e0;
+  }
+
+  .error-notification__action:hover {
+    background: #525252;
+  }
+
+  .error-notification__close {
+    color: #b0b0b0;
+  }
+
+  .error-notification__close:hover {
+    color: #e0e0e0;
+  }
+}

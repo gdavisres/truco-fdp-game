@@ -1,0 +1,112 @@
+:root {
+  color-scheme: only light;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #0f172a;
+  color: #f8fafc;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background: radial-gradient(circle at top, #1e293b 0%, #020617 100%);
+}
+
+.app-shell {
+  width: min(100%, 480px);
+  padding: 24px clamp(16px, 4vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  backdrop-filter: blur(12px);
+  background-color: rgba(15, 23, 42, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.45);
+}
+
+.app-shell__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.app-shell__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.app-shell__title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-shell__status {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  margin: 0;
+  color: #cbd5f5;
+}
+
+.app-shell__indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: radial-gradient(circle at 30% 30%, #94a3b8, #334155);
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5);
+  transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+.app-shell__indicator[data-state='connected'] {
+  background: radial-gradient(circle at 30% 30%, #4ade80, #15803d);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+}
+
+.app-shell__indicator[data-state='reconnecting'] {
+  background: radial-gradient(circle at 30% 30%, #facc15, #ca8a04);
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
+}
+
+.app-shell__indicator[data-state='offline'],
+.app-shell__indicator[data-state='disconnected'] {
+  background: radial-gradient(circle at 30% 30%, #f87171, #991b1b);
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.6);
+}
+
+.app-shell__indicator[data-state='error'] {
+  background: radial-gradient(circle at 30% 30%, #fda4af, #be123c);
+  box-shadow: 0 0 12px rgba(244, 114, 182, 0.6);
+}
+
+@media (min-width: 600px) {
+  body {
+    align-items: center;
+  }
+
+  .app-shell {
+    padding: 32px clamp(24px, 6vw, 48px);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-shell {
+    width: min(960px, 90vw);
+  }
+}
+
+@media (max-width: 320px) {
+  .app-shell {
+    border-radius: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "truco-fdp-frontend",
+  "version": "0.1.0",
+  "description": "Mobile-first web client for the Truco FDP Game",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest watch --run",
+    "test:e2e": "playwright test",
+    "test:performance": "vitest run performance.test.js",
+    "test:ci": "npm run test && npm run build && npm run test:performance",
+    "lint": "eslint --config .eslintrc.json src",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
+  "@playwright/test": "^1.48.0",
+  "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "jsdom": "^27.0.0",
+    "prettier": "^3.3.3",
+    "vite": "^5.2.10",
+    "vitest": "^1.6.0"
+  }
+}

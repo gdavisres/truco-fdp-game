@@ -1,0 +1,305 @@
+:root {
+  --board-surface: rgba(15, 23, 42, 0.65);
+  --board-outline: rgba(148, 163, 184, 0.18);
+  --board-accent: #38bdf8;
+  --board-highlight: #facc15;
+  --board-danger: #f87171;
+}
+
+.game-board {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--board-surface);
+  box-shadow: inset 0 0 0 1px var(--board-outline);
+  backdrop-filter: blur(6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.game-board[hidden] {
+  display: none !important;
+}
+
+.game-board__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-board__title {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.game-board__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.game-board__viraWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.game-board__viraLabel {
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.game-board__viraCard {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 48px;
+}
+
+.game-board__viraCard .card-tile {
+  transform: scale(0.68);
+  transform-origin: top right;
+  min-width: 4rem;
+  border-width: 1px;
+}
+
+.game-board__viraPlaceholder {
+  font-size: 1.25rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.game-board__turn {
+  color: var(--board-accent);
+  font-weight: 600;
+}
+
+.game-board__timer {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+.game-board__players {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.game-board__player {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  box-shadow: inset 0 0 0 1px var(--board-outline);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.game-board__player[data-turn='true'] {
+  box-shadow: inset 0 0 0 1px var(--board-accent);
+}
+
+.game-board__player[data-self='true'] {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.9));
+}
+
+.game-board__playerName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.game-board__playerBadge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.16);
+  color: #bae6fd;
+}
+
+.game-board__playerStatus {
+  font-size: 0.75rem;
+  color: #cbd5f5;
+}
+
+.game-board__playerStatus[data-status='disconnected'] {
+  color: var(--board-danger);
+}
+
+.game-board__table {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12);
+}
+
+.game-board__trickStatus {
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  color: #cbd5f5;
+}
+
+.game-board__slots {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.game-board__slot {
+  min-height: 140px;
+  border-radius: 14px;
+  border: 1px dashed rgba(148, 163, 184, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px;
+  text-align: center;
+  transition: border-color 200ms ease, transform 160ms ease;
+}
+
+.game-board__slot[data-has-card='true'] {
+  border-style: solid;
+  border-color: rgba(148, 163, 184, 0.7);
+}
+
+.game-board__slot[data-leading='true'] {
+  border-color: rgba(56, 189, 248, 0.85);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.game-board__slot[data-winner='true'] {
+  border-color: var(--board-highlight);
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.25);
+}
+
+.game-board__slot[data-cancelled='true'] {
+  border-color: rgba(248, 113, 113, 0.6);
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.35);
+}
+
+.game-board__slotLabel {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.game-board__cardShell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-board__hand {
+  display: grid;
+  gap: 12px;
+}
+
+.game-board__handHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+.game-board__handCards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.game-board__handCards .card-tile {
+  min-width: 96px;
+}
+
+.game-board__handCards .card-tile[disabled] {
+  opacity: 0.45;
+}
+
+.game-board__handCards .card-tile.card-tile--pending {
+  position: relative;
+  animation: boardPending 600ms ease-in-out infinite alternate;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35);
+}
+
+.game-board__visible {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.35);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12);
+}
+
+.game-board__visible[hidden] {
+  display: none;
+}
+
+.game-board__history {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  padding-top: 10px;
+}
+
+.game-board__history span {
+  display: block;
+  margin-top: 2px;
+}
+
+@media (min-width: 768px) {
+  .game-board {
+    padding: 20px;
+  }
+
+  .game-board__handCards {
+    gap: 16px;
+  }
+
+  .game-board__slot {
+    min-height: 160px;
+  }
+}
+
+@keyframes boardPending {
+  from {
+    transform: translateY(0px);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .game-board__players {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-board__slot {
+    min-height: 120px;
+  }
+
+  .game-board__handCards .card-tile {
+    min-width: 72px;
+  }
+}
