@@ -14,7 +14,7 @@ const roomsRouter = require('./api/rooms');
 const { stateManager } = require('./modules/stateManager');
 const { roomManager } = require('./modules/roomManager');
 const { registerRoomHandlers } = require('./socket/roomHandlers');
-const { configureSecurityHeaders, configureCORS } = require('./modules/security');
+const { configureSecurityHeaders } = require('./modules/security');
 
 const createApp = () => {
   const app = express();
@@ -49,7 +49,10 @@ const createApp = () => {
   configureSecurityHeaders(app); // Additional security headers
   app.use(compression()); // Enable gzip compression
   // Configure CORS with explicit origin check so we can log and debug mismatches.
-  const allowedOrigins = Array.isArray(config.cors.origin) ? config.cors.origin : [config.cors.origin];
+  // Normalize allowed origins (strip trailing slashes) to avoid mismatches like
+  // 'https://example.com' vs 'https://example.com/'.
+  const rawAllowed = Array.isArray(config.cors.origin) ? config.cors.origin : [config.cors.origin];
+  const allowedOrigins = rawAllowed.map((o) => String(o || '').trim().replace(/\/+$/, ''));
   app.use(cors({
     origin: (origin, callback) => {
       // No origin means server-to-server or curl; allow it
@@ -57,12 +60,13 @@ const createApp = () => {
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      const incoming = String(origin).replace(/\/+$/, '');
+      if (allowedOrigins.includes(incoming)) {
         return callback(null, true);
       }
 
       // Log blocked origin for debugging and do not allow
-      logger.warn('cors.origin_blocked', { origin, allowedOrigins });
+      logger.warn('cors.origin_blocked', { incomingOrigin: incoming, allowedOrigins, rawAllowed });
       return callback(null, false);
     },
     credentials: true,
