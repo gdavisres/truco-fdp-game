@@ -16,7 +16,11 @@ import './modules/gameUI/gameOver.js';
 import './modules/gameUI/chat.js';
 import './modules/gameUI/reconnection.js';
 
-const DEFAULT_SOCKET_URL = import.meta.env.VITE_SOCKET_URL ?? 'http://localhost:3000';
+// Prefer an explicit socket URL (VITE_SOCKET_URL). Fall back to VITE_API_URL if provided.
+// Remove trailing slashes and return `undefined` when not set so the client won't
+// accidentally connect to the page origin when the backend is hosted separately.
+const _rawSocketUrl = import.meta.env.VITE_SOCKET_URL ?? import.meta.env.VITE_API_URL;
+const DEFAULT_SOCKET_URL = _rawSocketUrl ? _rawSocketUrl.replace(/\/+$/, '') : undefined;
 const appRoot = document.getElementById('app');
 
 if (!appRoot) {

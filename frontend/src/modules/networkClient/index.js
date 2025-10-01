@@ -2,13 +2,15 @@ import { io } from 'socket.io-client';
 
 const STORAGE_KEY = 'truco.sessionId';
 const DEFAULT_SOCKET_OPTIONS = {
-  transports: ['websocket'],
+  transports: ['websocket', 'polling'],
   timeout: 10_000,
   autoConnect: false,
   reconnection: true,
   reconnectionAttempts: Infinity,
   reconnectionDelay: 750,
   reconnectionDelayMax: 4_000,
+  withCredentials: true,
+  path: '/socket.io',
   query: {
     client: 'frontend',
   },
