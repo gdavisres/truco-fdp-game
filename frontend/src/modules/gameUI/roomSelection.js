@@ -1,7 +1,9 @@
 import '../../css/roomSelection.css';
 import { registerModule } from '../moduleRegistry.js';
 
-const ROOM_ENDPOINT = '/api/rooms';
+// Use build-time Vite variable for API base if provided (Netlify). Remove trailing slash.
+const API_BASE = import.meta.env.VITE_API_URL ? String(import.meta.env.VITE_API_URL).replace(/\/+$/, '') : '';
+const ROOM_ENDPOINT = API_BASE ? `${API_BASE}/api/rooms` : '/api/rooms';
 const NAME_PATTERN = /^[A-Za-zÀ-ÿ0-9 ]{3,20}$/u;
 
 const createTemplate = () => `

@@ -21,6 +21,13 @@ import './modules/gameUI/reconnection.js';
 // accidentally connect to the page origin when the backend is hosted separately.
 const _rawSocketUrl = import.meta.env.VITE_SOCKET_URL ?? import.meta.env.VITE_API_URL;
 const DEFAULT_SOCKET_URL = _rawSocketUrl ? _rawSocketUrl.replace(/\/+$/, '') : undefined;
+
+// DEBUG: print resolved socket origin so we can verify env injection in the built app
+if (typeof window !== 'undefined') {
+  // eslint-disable-next-line no-console
+  console.debug('[network] DEFAULT_SOCKET_URL ->', DEFAULT_SOCKET_URL);
+}
+
 const appRoot = document.getElementById('app');
 
 if (!appRoot) {

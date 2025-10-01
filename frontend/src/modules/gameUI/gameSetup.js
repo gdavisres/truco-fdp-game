@@ -2,7 +2,8 @@ import '../../css/gameSetup.css';
 import { registerModule } from '../moduleRegistry.js';
 
 const MINIMUM_PLAYERS = 2;
-const ROOM_DETAILS_ENDPOINT = (roomId) => `/api/rooms/${encodeURIComponent(roomId)}`;
+const API_BASE = import.meta.env.VITE_API_URL ? String(import.meta.env.VITE_API_URL).replace(/\/+$/, '') : '';
+const ROOM_DETAILS_ENDPOINT = (roomId) => (API_BASE ? `${API_BASE}/api/rooms/${encodeURIComponent(roomId)}` : `/api/rooms/${encodeURIComponent(roomId)}`);
 
 const CONNECTION_LABELS = {
   connected: 'Connected',
